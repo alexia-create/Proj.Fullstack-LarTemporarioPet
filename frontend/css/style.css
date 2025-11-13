@@ -1,0 +1,162 @@
+:root{
+    --primary-color: #6c3fb5;
+    --secondary-color: #ff6b6b;
+    --success-color: #51cf66;
+    --info-color: #339af0;
+    --warning-color: #ffd43b;
+    --danger-color: #ff6b6b;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+}
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+.navbar{
+    padding: 1rem 0;
+}
+.navbar-brand{
+    font-size: 1.5rem;
+}
+.navbar-brand i{
+    color: var(--secondary-color);
+}
+.fixed-top{
+    z-index: 1030;
+}
+
+.hero-section{
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+}
+.hero-content{
+    color: white;
+    padding: 2rem 0;
+}
+.hero-content h1{
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.hero-image{
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: float 6s ease-in-out infinite;
+}
+@keyframes float{
+    0%,100%{
+        transform: translateY(0px);
+    }
+    50%{
+        transform: translateY(-20px);
+    }
+}
+.search-box{
+    background: white;
+    border-radius: 15px;
+    margin-top: 2rem;
+}
+
+.features-section{
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+.icon-banner{
+    animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+    0%,100%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.1);
+    }
+}
+.feature-card{
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    background: white;
+}
+.feature-card:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2)!important;
+}
+.service-card{
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+}
+.service-card:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2)!important;
+}
+.card-image-wrapper{
+    position: relative;
+    overflow: hidden;
+}
+.card-image-wrapper img{
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+.service-card:hover .card-image-wrapper img{
+    transform: scale(1.1);
+}
+.service-badge{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 8px 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.gallery-section{
+    background: var(--light-bg);
+}
+.pet-gallery-card{
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+.pet-gallery-card:hover{
+    transform: scale(1.05);
+}
+.pet-gallery-card img{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+.cta-section{
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.auth-pages{
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+.auth-pages .card{
+    border-radius: 20px;
+}
+.btn-primary{
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary:hover{
+   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+   transform: scale(1.04);
+}
+.btn-outline-primary{
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover{
+   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: var(--primary-color);
+}
