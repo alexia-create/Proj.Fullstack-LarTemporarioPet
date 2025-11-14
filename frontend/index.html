@@ -14,11 +14,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary" href="index.html">
-                <i class="bi bi-heart-fill">
-
-                </i>PousaPet
+                <i class="bi bi-heart-fill"></i>PousaPet
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -27,7 +25,7 @@
                         <a class="nav-link" href="index.html">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="cuidadores.html">Encontrar cuidador</a>
+                        <a class="nav-link" href="cuidadores.html">Animais Disponíveis</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#como-funciona">Como funciona</a>
@@ -51,35 +49,47 @@
             <div class="row align-itens-center">
                 <div class="col-lg-6 hero-content">
                     <h1 class="display-4 fw-bold ms-3">
-                        Cuide do <span class="text-danger">seu pet com amor </span> enquanto você estiver fora!
+                        Um <span class="text-danger">Lar temporário </span> pode salvar uma vida
                     </h1>
-                    <h2 class="h3 text-warning mb-4">
-                        Deixa com a gente!
+                    <h2 class="h3 text-danger mb-4">
+                        Seja um voluntário.
                     </h2>
-                    <p class="lead mb-4">Encontre cuidadores verificados e apaixonados por pets na sua região.</p>
+                    <p class="lead mb-4">Ajude animais resgatados a encontrarem um lar temporário enquanto aguardam por adoção definitiva.</p>
+                    
                     <!-- Search form -->
                     <div class="search-box card shadow-1g p-4">
                         <form id="searchForm">
                             <div class="row g-3">
                                 <div class="col-md-4">
-                                    <label class="form-label small">Tipo de Pet</label>
+                                    <label class="form-label small">Tipo de Animal</label>
                                     <select class="form-select" id="petType">
-                                        <option value="Cachorro">Cachorro</option>
+                                        <option value="Cachorro">Todos</option>
                                         <option value="Gato">Gato</option>
+                                        <option value="Gato">Cachorro</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label small">Seu Endereço</label>
-                                    <input type="text" class="form-control" placeholder="Digite seu endereço" id="address">
+                                    <label class="form-label small">Porte</label>
+                                    <select class="form-select" id="porte">
+                                         <option value="">Todos</option>
+                                        <option value="pequeno">Pequeno</option>
+                                        <option value="medio">Médio</option>
+                                        <option value="grande">Grande</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label small">Data</label>
-                                    <input type="date" class="form-control" id="date">
+                                    <label class="form-label small">Idade</label>
+                                    <select class="form-select" id="idade">
+                                        <option value="">Todas</option>
+                                        <option value="filhote">Filhote</option>
+                                        <option value="adulto">Adulto</option>
+                                        <option value="Idoso">Idoso</option>
+                                    </select>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
                                 <i class="bi bi-search"></i>
-                                Encontrar Cuidador
+                                Ver Animais Disponíveis
                             </button>
                         </form>
                     </div>
@@ -97,34 +107,34 @@
             <div class="icon-banner mb-4">
                 <i class="bi bi-heart-fill text-danger display-1"></i>
             </div>
-            <h2 class="display-5 fw-bold mb-3">Cuidamos do seu pet com todo <span class="text-danger">amor e segurança</span></h2>
-            <p class="lead text-muted mb-5">Garantimos o melhor para seu amigo de quatro patas</p>
+            <h2 class="display-5 fw-bold mb-3">Salve vidas sendo um lar temporário</h2>
+            <p class="lead text-muted mb-5">Ajude animais resgatados enquanto esperam por um lar definitivo</p>
 
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="feature-card card border-0 shadow-sm h-100 p-4">
                         <div class="card-body text-center">
                             <i class="bi bi-shield-check text-primary display-4 mb-3"></i>
-                            <h3 class="h5 fw-bold">Garantia Veterinária</h3>
-                            <p class="text-muted">Para garantir a segurança do seu pet,cobrimos eventuais despesas veterinárias relacionadas a acidentes ou ocorrências durante todo o serviço.</p>
+                            <h3 class="h5 fw-bold">Suporte Total</h3>
+                            <p class="text-muted">Nossa instituição sem fins lucrativos assegura o bem-estar dos animais em lares temporários, fornecendo alimentação, cuidados médicos e apoio contínuo através de parceiros.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card card border-0 shadow-sm h-100 p-4">
                         <div class="card-body text-center">
-                            <i class="bi bi-patch-check text-sucess display-4 mb-3"></i>
-                            <h3 class="h5 fw-bold">Cuidadores Verificados</h3>
-                            <p class="text-muted">Nossos são avaliados com cuidado a cada serviço prestado para garantir que seu pet tenha uma experiência incrível!</p>
+                            <i class="bi bi-people text-success display-4 mb-3"></i>
+                            <h3 class="h5 fw-bold">Comunidade Voluntária</h3>
+                            <p class="text-muted">Faça parte de uma rede de pessoas apaixonadas por animais que salvam vidas todos os dias.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card card border-0 shadow-sm h-100 p-4">
                         <div class="card-body text-center">
-                            <i class="bi bi-people text-info display-4 mb-3"></i>
-                            <h3 class="h5 fw-bold">Pré-encontro</h3>
-                            <p class="text-muted">O bem-estar do seu pet vem em primeiro lugar. Por isso, recomendamos que ele conheça e se familiarize com o cuidador antes de realizar o serviço.</p>
+                            <i class="bi bi-heart-pulse text-danger display-4 mb-3"></i>
+                            <h3 class="h5 fw-bold">Acompanhamento</h3>
+                            <p class="text-muted">Nossa equipe acompanha cada animal e voluntário, garantindo bem-estar e suporte contínuo.</p>
                         </div>
                     </div>
                 </div>
@@ -136,30 +146,31 @@
     <section class="services-section py-5 bg-light" id="como-funciona">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">Praticidade para você. Diversão pro seu pet.</h2>
+                <h2 class="display-5 fw-bold mb-3">Como funciona o Lar temporário</h2>
+                <p class="lead text-muted">Você oferece amor e cuidado, nós oferecemos suporte</p>
             </div>
 
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="service-card card border-0 shadow-sm h-100">
                         <div class="card-img-wrapper">
-                            <img src="assets/helena-lopes-8sDnY7JdRSQ-unsplash.jpg" class="card-img-top" alt="Hospedagem">
+                            <img src="assets/helena-lopes-8sDnY7JdRSQ-unsplash.jpg" class="card-img-top" alt="Cadastro">
                             <div class="service-badge badge bg-primary">
-                                <i class="bi bi-house-door"></i> Hospedagem
+                                <i class="bi bi-person-plus"></i> Passo 1
                             </div>
                         </div>
                         <div class="card-body">
-                            <h3 class="h5 fw-bold text-primary">Pro seu pet passar</h3>
-                            <p class="text-muted">Seu pet fica hospedado na casa do cuidador, recebendo atenção e carinho 24horas por dias.</p>
+                            <h3 class="h5 fw-bold text-primary">Cadastre-se como Volutário</h3>
+                            <p class="text-muted">Preencha seu cadastro informando suas preferências e disponibilidade para receber animais.</p>
                             <ul class="list-unstyled">
                                 <li>
-                                    <i class="bi bi-check-circle-fill text-success"></i> Acompanhamento integral
+                                    <i class="bi bi-check-circle-fill text-success"></i> Processo simples
                                 </li>
                                 <li>
-                                    <i class="bi bi-check-circle-fill text-success"></i> Casa com quintal
+                                    <i class="bi bi-check-circle-fill text-success"></i> Sem custos
                                 </li>
                                 <li>
-                                    <i class="bi bi-check-circle-fill text-success"></i> Fotos e atualizações
+                                    <i class="bi bi-check-circle-fill text-success"></i> Análise rápida
                                 </li>
                             </ul>
                         </div>
@@ -170,21 +181,21 @@
                         <div class="card-img-wrapper">
                             <img src="assets/ayla-verschueren-7ski9cyE6UA-unsplash.jpg" class="card-img-top" alt="Creche">
                             <div class="service-badge badge bg-success">
-                                <i class="bi bi-sun"></i> Creche
+                                <i class="bi bi-heart"></i> Passo 2
                             </div>
                         </div>
                         <div class="card-body">
-                            <h3 class="h5 fw-bold text-success">Pro seu pet brincar</h3>
-                            <p class="text-muted">Seu pet passa o dia brincando e socializando, voltando para casa no final do dia.</p>
+                            <h3 class="h5 fw-bold text-success">Escolha um Animal</h3>
+                            <p class="text-muted">Veja os animais disponíveis e solicite hospedar aquele que mais combina com você.</p>
                             <ul class="list-unstyled">
                                 <li>
-                                    <i class="bi bi-check-circle-fill text-success"></i> Socialização
+                                    <i class="bi bi-check-circle-fill text-success"></i> Perfis detalhados
                                 </li>
                                 <li>
-                                    <i class="bi bi-check-circle-fill text-success"></i> Atividades recreativas
+                                    <i class="bi bi-check-circle-fill text-success"></i> Informações de saúde
                                 </li>
                                 <li>
-                                    <i class="bi bi-check-circle-fill text-success"></i> Horário flexível
+                                    <i class="bi bi-check-circle-fill text-success"></i> Histórico completo
                                 </li>
                             </ul>
                         </div>
@@ -194,17 +205,17 @@
                         <div class="service-card card border-0 shadow-sm h-100">
                             <div class="card-img-wrapper">
                                 <img src="assets/helena-lopes-ZpMkK7nji-w-unsplash.jpg" class="card-img-top" alt="Pet Sitter">
-                                <div class="service-badge badge bg-warning">
-                                    <i class="bi bi-person-heart"></i> Pet Sitter
+                                <div class="service-badge badge bg-danger">
+                                    <i class="bi bi-house-heart"></i> Passo 3
                                 </div>
                             </div>
                         <div class="card-body">
-                            <h3 class="h5 fw-bold text-warning">Pro pet que prefere casa</h3>
-                            <p class="text-muted">O cuidador vai até sua casa para cuidar do seu pet no conforto do lar.</p>
+                            <h3 class="h5 fw-bold text-danger">Acolha com Amor</h3>
+                            <p class="text-muted">Receba o animais em sua casa e ofereça carinho enquanto ele aguarda adoção definitiva.</p>
                             <ul class="list-unstyled">
-                                <li><i class="bi bi-check-circle-fill text-success"></i> Conforto do lar</li>
-                                <li><i class="bi bi-check-circle-fill text-success"></i> Visitas diárias</li>
-                                <li><i class="bi bi-check-circle-fill text-success"></i> Alimentação e Passeios</li>
+                                <li><i class="bi bi-check-circle-fill text-success"></i> Suporte</li>
+                                <li><i class="bi bi-check-circle-fill text-success"></i> Ração fornecida</li>
+                                <li><i class="bi bi-check-circle-fill text-success"></i> Acompanhamento</li>
                             </ul>
                         </div>
                     </div>
@@ -216,8 +227,8 @@
     <section class="gallery-section py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">Pets Felizes com Nossos Cuidadores</h2>
-                <p class="lead text-muted">Veja alguns dos pets que já foram cuidados por nós</p>
+                <h2 class="display-5 fw-bold mb-3">Animais Felizes com Nossos Lares Temporários</h2>
+                <p class="lead text-muted">Veja alguns dos animais que já foram acolhidos por nós</p>
             </div>
             <div id="petGallery" class="row g-4">
                 <!-- A galeria vai ser carregada via API-->
@@ -233,14 +244,14 @@
     <!-- CTA Section -->
     <section class="cta-section py-5 bg-primary text-white">
         <div class="container text-center">
-            <h2 class="display-5 fw-bold mb-4">Pronto para encontrar o cuidador perfeito?</h2>
-            <p class="lead mb-4">Junte-se a milhares de tutores satisfeitos</p>
+            <h2 class="display-5 fw-bold mb-4">Pronto para salvar uma vida?</h2>
+            <p class="lead mb-4">Torne-se um volutário e faça a diferença</p>
             <div class="d-flex gap-3 justify-content-center flex-wrap">
-                <a href="cuidadores.html" class="btn btn-light btn-lg px-5">
-                    <i class="bi bi-search"></i> Encontrar Cuidador
+                <a href="animais.html" class="btn btn-light btn-lg px-5">
+                    <i class="bi bi-search"></i> Ver Animais
                 </a>
                 <a href="cadastro.html" class="btn btn-outline-light btn-lg px-5">
-                    <i class="bi bi-person-plus"></i> Quero ser Cuidador
+                    <i class="bi bi-person-plus"></i> Ser Voluntário
                 </a>
             </div>
         </div>
@@ -257,11 +268,11 @@
                     <div class="accordion" id="faqAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">Como funciona a hospedagem?</button>
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">O que é um lar temporário?</button>
                             </h2>
                             <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Seu pet fica na casa do cuidador durante o período combinado, recebendo todos os cuidados necessários como se estivesse em casa.
+                                    Um lar temporário é uma casa que acolhe animais resgatados por um período determinado, oferecendo cuidados e carinho enquanto aguardam adoção definitiva.
                                 </div>
 
                             </div>
@@ -269,12 +280,12 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                    Os cuidadores são verificados?
+                                    Preciso pagar algo?
                                 </button>
                             </h2>
                             <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Sim! Todos os cuidadores passam por um processo de verificação rigoroso e são avaliados pelos tutores após cada serviço.
+                                    Não! Somos uma plataforma voluntária. Através dos nossos parceiros, fornecemos ração, medicamentos e assistência veterinária para todos os animais. Você oferece apenas amor e um espaço seguro.
                                 </div>
 
                             </div>
@@ -282,12 +293,12 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                    E se meu pet precisar de cuidados veterinários?
+                                    Por quanto tempo fico com o animal?
                                 </button>
                             </h2>
                             <div id="faq3" class="accordion-collapse collapse" data-bs-parent="faqAccordion">
                                 <div class="accordion-body">
-                                    Oferecemos garantia veterinária para cobrir eventuais despesas relacionadas a acidentes durante o serviço.
+                                    O tempo varia conforme cada animal e sua disponibilidade. Pode ser de algumas semanas até alguns meses. Você pode definir sua disponibilidade no cadastro.
                                 </div>
                             </div>
                         </div>
@@ -297,7 +308,8 @@
         </div>
     </section>
 
-       <footer class="footer bg-dark text-white pt-5 pb-3">
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white pt-5 pb-3">
     <div class="container">
         <div class="row">
             
@@ -305,7 +317,7 @@
                 <h5 class="fw-bold mb-4 fs-5">
                     <i class="bi bi-heart-fill text-danger me-2"></i> PousaPet
                 </h5>
-                <p class="text-secondary">A plataforma que conecta tutores a cuidadores apaixonados por pets.</p>
+                <p class="text-secondary">A plataforma que conecta volutários apaixonados por animais.</p>
                 <div class="social-links mt-4">
                     <a href="#" class="text-white me-4"><i class="bi bi-facebook fs-4"></i></a>
                     <a href="#" class="text-white me-4"><i class="bi bi-instagram fs-4"></i></a>
@@ -317,8 +329,8 @@
                 <h6 class="fw-bold mb-3 fs-5">Links Rápidos</h6>
                 <ul class="list-unstyled">
                     <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Sobre Nós</a></li>
-                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Como Funciona</a></li>
-                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Seja um Cuidador</a></li>
+                    <li class="mb-2"><a href="#como-funciona" class="text-secondary text-decoration-none">Como Funciona</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Seja um Volutário</a></li>
                     <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Blog</a></li>
                 </ul>
             </div>
@@ -343,5 +355,6 @@
 </footer>
 </body>
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="Js/main.js"></script>
 </html>
