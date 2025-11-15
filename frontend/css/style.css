@@ -29,14 +29,14 @@ body{
 }
 
 .hero-section{
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background:var(--light-bg);
     min-height: 100vh;
     display: flex;
     align-items: center;
     padding-top: 80px;
 }
 .hero-content{
-    color: white;
+    color: var(--light-bg);
     padding: 2rem 0;
 }
 .hero-content h1{
@@ -55,14 +55,14 @@ body{
     }
 }
 .search-box{
-    background: white;
+    background: var(--light-bg);
     border-radius: 15px;
     margin-top: 2rem;
 }
 
 .features-section{
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: var(--light-bg);
+    color: var(--dark-text);
 }
 .icon-banner{
     animation: pulse 2s ease-in-out infinite;
