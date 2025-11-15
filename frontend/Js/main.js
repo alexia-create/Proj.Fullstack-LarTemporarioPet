@@ -9,7 +9,7 @@ async function carregarGaleriaDePets() {
 
     try {
 
-        const response = await fetch('http://localhost:3000/animais');
+        const response = await fetch('https://pousapet-backend.onrender.com/animais');
 
         if (!response.ok) {
             throw new Error(`Erro na API: ${response.status}`);
