@@ -1,3 +1,4 @@
+
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault()
@@ -159,3 +160,4 @@ document.querySelectorAll(".accordion-button").forEach((button) => {
 })
 
 console.log("PousaPet main.js Carregado com sucesso!")
+
