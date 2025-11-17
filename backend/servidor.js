@@ -1,12 +1,31 @@
 const express = require('express');
 const db = require('./db');
-
 const app = express();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 3000;
 const cors = require('cors');
 
 app.use(express.json());
 app.use(cors());
+
+// --- Middleware de Verificação de Token ---
+function verificarToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ error: 'Acesso negado. Token não fornecido.' });
+    }
+
+    try {
+        const payload = jwt.verify(token, JWT_SECRET);
+        req.usuario = payload;
+        next();
+    } catch (err) {
+        res.status(403).json({ error: 'Token inválido.' });
+    }
+}
 
 app.get('/usuarios', async (req, res) => {
     try {
@@ -27,15 +46,16 @@ const bcrypt = require('bcrypt');
 
 
 app.post('/usuarios', async (req, res) => {
-    const { nome_completo, email, senha, telefone, cidade, estado } = req.body;
+    const { nome_completo, email, senha, telefone, cidade, estado, role } = req.body;
 
 
-    if (!nome_completo || !email || !senha || !cidade || !estado) {
+    if (!nome_completo || !email || !senha || !cidade || !estado || !role) {
         return res.status(400).json({ error: 'Campos obrigatórios faltando.' });
     }
-
+    const client = await db.pool.connect();
     try {
 
+        await client.query('BEGIN');
         const salt = await bcrypt.genSalt(10);
         const senha_hash = await bcrypt.hash(senha, salt);
 
@@ -54,14 +74,28 @@ app.post('/usuarios', async (req, res) => {
 
         res.status(201).json(rows[0]);
 
-    } catch (err) {
+        if (role === 'voluntario') {
+            const perfilQuery = `
+                INSERT INTO Voluntarios_Perfis (usuario_id, titulo_perfil)
+                VALUES ($1, $2)
+            `;
+            await db.query(perfilQuery, [novoUsuario.id, `Perfil de ${nome_completo.split(' ')[0]}`]);
+        }
+        // Se for 'solicitante', não faz nada extra.
 
+        await db.query('COMMIT'); // Confirma a transação
+        res.status(201).json(novoUsuario);
+
+    } catch (err) {
+        await db.query('ROLLBACK');
         if (err.code === '23505') {
             return res.status(400).json({ error: 'Este e-mail já está cadastrado.' });
         }
 
         console.error('Erro ao cadastrar usuário:', err);
         res.status(500).send('Erro no servidor');
+    }finally{
+        db.release();
     }
 });
 
@@ -95,6 +129,21 @@ function verificarToken(req, res, next) {
         res.status(403).json({ error: 'Token inválido.' });
     }
 }
+ if (tipoUsuario === 'solicitante') {
+        // Redireciona o solicitante para o seu dashboard
+        res.status(201).json({ 
+            mensagem: 'Conta de Solicitante criada com sucesso!',
+            redirecionarPara: '/dashboard-solicitante.html' // URL correta para o Solicitante
+        });
+    } else if (tipoUsuario === 'voluntario') {
+        // Redireciona o voluntário para o seu dashboard
+        res.status(201).json({ 
+            mensagem: 'Conta de Voluntário criada com sucesso!',
+            redirecionarPara: '/dashboard-voluntario.html' // URL correta para o Voluntário
+        });
+    } else {
+        res.status(400).json({ mensagem: 'Tipo de usuário inválido.' });
+}
 
 
 app.post('/login', async (req, res) => {
@@ -118,6 +167,7 @@ app.post('/login', async (req, res) => {
 
 
         const usuario = rows[0];
+        
 
 
         const senhaCorreta = await bcrypt.compare(senha, usuario.senha_hash);
@@ -126,12 +176,20 @@ app.post('/login', async (req, res) => {
 
             return res.status(401).json({ error: 'Credenciais inválidas.' });
         }
+        let role = 'solicitante'; // Padrão
+        const perfilQuery = 'SELECT 1 FROM Voluntarios_Perfis WHERE usuario_id = $1 LIMIT 1';
+        const perfilResult = await db.query(perfilQuery, [usuario.id]);
+
+        if (perfilResult.rows.length > 0) {
+            role = 'voluntario';
+        }
 
 
         const payload = {
             id: usuario.id,
             nome: usuario.nome_completo,
-            email: usuario.email
+            email: usuario.email,
+            role:role
         };
 
 
@@ -144,11 +202,7 @@ app.post('/login', async (req, res) => {
         res.status(200).json({
             message: 'Login bem-sucedido!',
             token: token,
-            usuario: {
-                id: usuario.id,
-                nome: usuario.nome_completo,
-                email: usuario.email
-            }
+            usuario: payload
         });
 
     } catch (err) {
