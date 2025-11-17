@@ -16,7 +16,7 @@ O back-end foi construído com as seguintes tecnologias:
 * **Conexão com BD:** node-postgres (pg)
 * **CORS:** cors
 
-### Infraestrutura (Deploy)
+### Deploy
 
 * **Banco de Dados:** Neon
 * **Servidor (API):** Render
