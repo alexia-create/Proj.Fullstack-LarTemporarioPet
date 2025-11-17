@@ -1,5 +1,6 @@
 // CHANGE: API configuration file - centralized backend URL and constants
-const API_URL = 'https://pousapet-backend.onrender.com';
+window.API_URL = 'https://pousapet-backend.onrender.com';
+const API_URL = window.API_URL; // Keep for backward compatibility
 
 // Token management
 function getToken() {

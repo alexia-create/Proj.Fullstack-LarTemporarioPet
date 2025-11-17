@@ -1,127 +1,5 @@
 const bootstrap = window.bootstrap
 
-//exemplo do banco de dados de animais
-const animaisData = [
-    {
-        id:1,
-        nome:"Thor",
-        tipo:"cachorro",
-        raca:"SRD (Sem Raça Definida)",
-        idade_estimada:3,
-        porte:"grande",
-        descricao:"Thor é um cachorro muito dócil e carinhoso. Foi resgatado da rua com uma pata machucada, já tratada. Adoro brincar e se dá bem com crianças.",
-        status:"diponivel",
-        foto:"/rescued-large-brown-dog.jpg",
-        condicoes_saude:"Vacinado, castrado, vermifugado",
-        data_resgate:"2025-10-15",
-        urgente: true,
-    },
-    {
-        id:2,
-        nome:"luna",
-        tipo:"cachorro",
-        raca:"Beagle",
-        idade_estimada:2,
-        porte:"medio",
-        descricao:"Luna é uma cachorrinha muito ativa e brincalhona. Foi abandonada grávida e após ter seus filhotes (já adotados), está pronta para encontrar seu lar definitivo.",
-        status:"diponivel",
-        foto:"/beagle-dog-png",
-        condicoes_saude:"Vacinada, castrada, todos os exames em dia",
-        data_resgate:"2025-09-20",
-        urgente: false,
-    },
-    {
-        id:3,
-        nome:"Mia",
-        tipo:"gato",
-        raca:"SRD",
-        idade_estimada:1,
-        porte:"pequeno",
-        descricao:"Mia é uma gatinha tímida mas muito carinhosa quando ganha confiança. Foi resgatada de uma colônia e precisa de um lar tranquilo",
-        status:"diponivel",
-        foto:"/rescued-orange-cat.jpg",
-        condicoes_saude:"Vacinada, castrada, todos os exames em dia",
-        data_resgate:"2025-11-01",
-        urgente: false,
-    },
-    {
-        id:4,
-        nome:"Bob",
-        tipo:"cachorro",
-        raca:"SRD",
-        idade_estimada:5,
-        porte:"grande",
-        descricao:"Bob é um cachorro adulto muito calmo e educado. Seu tutor faleceu e ele precisa de um novo lar. Ótimo com crianças e outros animais.",
-        status:"em_lar_temporario",
-        foto:"/rescued-dog-brown.jpg",
-        condicoes_saude:"Vacinado, castrado, tratamento para artrite controlado.",
-        data_resgate:"2025-10-01",
-        urgente: false,
-    },
-    {
-        id:5,
-        nome:"Nina",
-        tipo:"gato",
-        raca:"SRD",
-        idade_estimada:4,
-        porte:"pequeno",
-        descricao:"Nina é uma gata elegante e independente. Foi resgatada após ser abandonada em mudança. Prefere ser a única gata da casa.",
-        status:"disponivel",
-        foto:"/rescued-cat.jpg",
-        condicoes_saude:"Vacinada, castrada, saudável.",
-        data_resgate:"2025-11-10",
-        urgente: true,
-    },
-    {
-        id: 6,
-        nome: "Max",
-        tipo: "cachorro",
-        raca: "Pinscher",
-        idade_estimada: 7,
-        porte: "pequeno",
-        descricao:
-        "Max é um cachorrinho idoso muito amoroso. Foi resgatado de maus tratos e precisa de um lar que ofereça conforto em sua terceira idade.",
-        status: "disponivel",
-        foto: "/pinscher-dog.jpg",
-        condicoes_saude: "Vacinado, castrado, precisa medicação diária para coração",
-        data_resgate: "2025-09-05",
-        urgente: true,
-    },
-    {
-        id: 7,
-        nome: "Bella",
-        tipo: "cachorro",
-        raca: "Poodle",
-        idade_estimada: 4,
-        porte: "pequeno",
-        descricao:
-        "Bella é uma cadelinha muito dócil e carinhosa. Foi resgatada de um canil clandestino. Adora colo e carinho.",
-        status: "disponivel",
-        foto: "/white-poodle.png",
-        condicoes_saude: "Vacinada, castrada, em recuperação nutricional",
-        data_resgate: "2025-10-20",
-        urgente: false,
-    },
-    {
-        id: 8,
-        nome: "Simba",
-        tipo: "gato",
-        raca: "SRD",
-        idade_estimada: 6,
-        porte: "pequeno",
-        descricao:
-        "Simba é um gatão laranja muito amigável. Foi atropelado e após tratamento está 100% recuperado. Ama brincar com bolinhas.",
-        status: "em_lar_temporario",
-        foto: "/orange-tabby-cat.png",
-        condicoes_saude: "Vacinado, castrado, recuperado completamente",
-        data_resgate: "2024-08-15",
-        urgente: false,
-    },
-]
-
-let filteredAnimais = [...animaisData]
-let currentAnimalId = null
-
 //Carregamento de Animais
 function loadAnimais(){
     const container = document.getElementById("animaisList")
@@ -141,6 +19,32 @@ function loadAnimais(){
         return
     }
 
+    //exemplo do banco de dados de animais
+}
+async function buscarEExibirAnimais() {
+    let loadAnimais= []
+  
+ try {
+    const apiUrl = window.API_URL || (typeof API_URL !== 'undefined' ? API_URL : 'https://pousapet-backend.onrender.com');
+    const url = `${apiUrl}/animais`;
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Endpoint não encontrado. Verifique se o backend está rodando e se a rota /voluntarios existe.');
+      } else if (response.status === 500) {
+        throw new Error('Erro no servidor. Verifique se o banco de dados está configurado corretamente.');
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    }
+    
+    // parse response JSON into animaisData
+    const animaisData = await response.json();
+    let filteredAnimais = [...animaisData]
+    let currentAnimalId = animaisData;
+
     container.innerHTML = ""
     resultCount.textContent = filteredAnimais.length
 
@@ -151,12 +55,12 @@ function loadAnimais(){
 
         const statusBadge = {
             disponivel:'<span class="badge bg-success">Disponível</span>',
-            em_lar_temporario:'<span class="badge bg-warning text-dark">Em Lar Temporário</span',
+            em_lar_temporario:'<span class="badge bg-warning text-dark">Em Lar Temporário</span>',
             adotado:'<span class="badge bg-info">Adotado</span>',
         }
 
         const urgenteTag = animal.urgente
-            ?'<span class="badge bg-danger position-absolute top-0 end-0 m-2"><i class="bi bi-exclamatio-triangle"></i> URGENTE</span>'
+            ?'<span class="badge bg-danger position-absolute top-0 end-0 m-2"><i class="bi bi-exclamation-triangle"></i> URGENTE</span>'
             :""
         col.innerHTML = `
                 <div class="cuidador-card card border-0 shadow-sm h-100 position-relative">
@@ -164,7 +68,7 @@ function loadAnimais(){
                     <img src="${animal.foto}" class="card-img-top"
                     alt="${animal.nome}" style="height: 200px;object-fit: cover;">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-star mb-2">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
                             <h5 class="card-title mb-0">${animal.nome}</h5>
                             ${statusBadge[animal.status] || ""}
                         </div>
@@ -172,13 +76,13 @@ function loadAnimais(){
                             <i class="bi bi-tag"></i> ${animal.raca} . ${animal.idade_estimada} ano${animal.idade_estimada > 1 ? "s" : ""}<br>
                             <i class="bi bi-rulers"></i> Porte ${animal.porte}
                         </p>
-                        <p class="card-text text-muted small mb-3">${animal.descricao.substring(0.100)}...</p>
+                        <p class="card-text text-muted small mb-3">${animal.descricao.substring(0,100)}...</p>
 
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
                                 <i class="bi bi-calendar"></i> ${new Date(animal.data_resgate).toLocaleDateString("pt-BR")}
                             </small>
-                            <button class="btn btn-primary btn-sm onclick-"viewAnimalDetails(${animal.id})">
+                            <button class="btn btn-primary btn-sm" onclick="viewAnimalDetails(${animal.id})">
                                 Ver Detalhes
                             </button>
                         </div>
@@ -188,6 +92,19 @@ function loadAnimais(){
             `
         container.appendChild(col)
     })
+  } catch (error) {
+    console.error("Erro ao buscar animais:", error)
+    const container = document.getElementById("animaisList")
+    if (container) {
+      container.innerHTML = `
+        <div class="col-12 text-center py-5">
+          <i class="bi bi-exclamation-circle display-1 text-danger"></i>
+          <h3 class="mt-3">Erro ao carregar animais</h3>
+          <p class="text-muted">${error.message}</p>
+        </div>
+      `
+    }
+  }
 }
 
 //Filtrar Animais
@@ -253,7 +170,7 @@ function viewAnimalDetails(id){
         document.getElementById("animalModalBody").innerHTML = `
             <div class="row">
                 <div class="col-md-6">
-                    <img src="${animal.foto}" class="img-fluid rouded mb-3" alt="${animal.nome}">
+                    <img src="${animal.foto}" class="img-fluid rounded mb-3" alt="${animal.nome}">
                 </div>
                 <div class="col-md-6">
                     <h5>${animal.nome}</h5>
@@ -267,7 +184,7 @@ function viewAnimalDetails(id){
                     <p>
                     <p><strong>Idade estimada:</strong> ${animal.idade_estimada} ano${animal.idade_estimada > 1 ? "s" : ""}</p>
                     <p><strong>Porte:</strong> ${animal.porte}</p>
-                    <p><strong>Data de resgate:</strong> ${new Date(animal.data_resgate).toLocaleDateString("pr-br")}</p>
+                    <p><strong>Data de resgate:</strong> ${new Date(animal.data_resgate).toLocaleDateString("pt-BR")}</p>
 
                     <hr>
 
@@ -316,7 +233,7 @@ document.getElementById("btnSolicitarHospedagem")?.addEventListener("click", () 
         )
 
         //close modal
-        const modal = bootstrap.Modal.getIstance(document.getElementById("animalModal"))
+        const modal = bootstrap.Modal.getInstance(document.getElementById("animalModal"))
         modal.hide()
 
         //Show success toast
@@ -339,9 +256,9 @@ function showToast(message, type = "info"){
     const bgClass = type ==="success" ? "bg-success": type === "warning" ? "bg-warning" : type === "danger" ? "bg-danger" : "bg-info"
 
     const toastHTML = `
-        <div id="${toastId}" class="toast align-items-center text-white ${bgClass} bordor-0" role="alert">
+        <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert">
             <div class="toast-body">${message}</div>
-            <button type="button" class=btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
     
@@ -377,4 +294,4 @@ document.addEventListener("DOMContentLoaded", () =>{
     }
 })
 
-console.log("Animais.js carregado com sucesso")
+console.log("Animais.js carregado com sucesso");

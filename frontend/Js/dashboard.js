@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     }).then(r => r.json());
 
-    // Update stats cards
     const statsCards = document.querySelectorAll('.row.g-4.mb-4 .card h3');
     if (statsCards.length >= 4) {
       statsCards[0].textContent = stats.hospedagens_ativas || 0;
@@ -32,10 +31,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       statsCards[3].textContent = stats.avaliacao_media ? stats.avaliacao_media.toFixed(1) : '0.0';
     }
 
-    // Update mensagens badge
     const mensagensBadge = document.querySelector('.sidebar a[href="#mensagens"] .badge');
     if (mensagensBadge) {
-      mensagensBadge.textContent = '0'; // Will be dynamic when messages are implemented
+      mensagensBadge.textContent = '0';
     }
   } catch (error) {
     console.error('[v0] Erro ao carregar stats:', error);
@@ -81,7 +79,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadHospedagensAtivas() {
   const usuario = getUsuarioLogado();
   try {
-    // First get volunteer profile
     const perfil = await API.obterPerfilVoluntarioDoUsuario(usuario.id);
     const solicitacoes = await API.listarSolicitacoesVoluntario(perfil.id);
     const ativas = solicitacoes.filter(s => s.status_solicitacao === 'aprovada' || s.status_solicitacao === 'em_andamento');
@@ -96,7 +93,7 @@ async function loadHospedagensAtivas() {
           const row = document.createElement('tr');
           const dataInicio = new Date(sol.data_inicio_prevista);
           const dataFim = new Date(sol.data_fim_prevista);
-          const duracao = Math.ceil((dataFim - dataInicio) / (1000 * 60 * 60 * 24 * 30)); // months
+          const duracao = Math.ceil((dataFim - dataInicio) / (1000 * 60 * 60 * 24 * 30));
           
           row.innerHTML = `
             <td>
@@ -110,7 +107,7 @@ async function loadHospedagensAtivas() {
             <td>${duracao} ${duracao === 1 ? 'mês' : 'meses'}</td>
             <td><span class="badge bg-success">${sol.status_solicitacao}</span></td>
             <td>
-              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver Detalhes</button>
+              <button class="btn btn-sm btn-outline-primary" onclick="verDetalhesSolicitacao(${sol.id})">Ver Detalhes</button>
             </td>
           `;
           tbody.appendChild(row);
@@ -148,10 +145,11 @@ async function loadSolicitacoesPendentes() {
             </div>
             <p class="mb-1 text-muted">${sol.mensagem_solicitante || 'Sem mensagem'}</p>
             <p class="mb-1"><strong>Animal:</strong> ${sol.tipo_animal} - ${sol.porte}</p>
+            <p class="mb-1"><strong>Período:</strong> ${new Date(sol.data_inicio_prevista).toLocaleDateString('pt-BR')} até ${new Date(sol.data_fim_prevista).toLocaleDateString('pt-BR')}</p>
             <div class="mt-2">
               <button class="btn btn-sm btn-success" onclick="aprovarSolicitacao(${sol.id})">Aprovar</button>
               <button class="btn btn-sm btn-danger" onclick="recusarSolicitacao(${sol.id})">Recusar</button>
-              <button class="btn btn-sm btn-outline-primary">Ver Perfil</button>
+              <button class="btn btn-sm btn-outline-primary" onclick="verPerfilSolicitante(${sol.solicitante_id})">Ver Perfil</button>
             </div>
           `;
           listGroup.appendChild(item);
@@ -201,6 +199,7 @@ async function loadHistorico() {
       const listGroup = document.createElement('div');
       listGroup.className = 'list-group';
       concluidas.forEach(sol => {
+        const statusClass = sol.status_solicitacao === 'concluida' ? 'success' : 'secondary';
         const item = document.createElement('div');
         item.className = 'list-group-item';
         item.innerHTML = `
@@ -208,7 +207,8 @@ async function loadHistorico() {
             <h6 class="mb-1">${sol.nome_animal} - Solicitado por ${sol.nome_completo}</h6>
             <small>${new Date(sol.data_solicitacao).toLocaleDateString('pt-BR')}</small>
           </div>
-          <p class="mb-1">Status: <span class="badge bg-secondary">${sol.status_solicitacao}</span></p>
+          <p class="mb-1">Status: <span class="badge bg-${statusClass}">${sol.status_solicitacao}</span></p>
+          <p class="mb-1 text-muted small">Animal: ${sol.tipo_animal} - ${sol.porte}</p>
         `;
         listGroup.appendChild(item);
       });
@@ -233,7 +233,7 @@ async function loadMensagens() {
       <div class="card-body">
         <div class="alert alert-info">
           <i class="bi bi-info-circle"></i> Sistema de mensagens em desenvolvimento. 
-          Por enquanto, entre em contato diretamente com os solicitantes pelo telefone fornecido.
+          Por enquanto, entre em contato diretamente com os solicitantes pelo telefone fornecido nas solicitações.
         </div>
       </div>
     `;
@@ -242,6 +242,7 @@ async function loadMensagens() {
 }
 
 async function loadAvaliacoes() {
+  const usuario = getUsuarioLogado();
   let avaliacoesSection = document.querySelector('#avaliacoesSection');
   if (!avaliacoesSection) {
     avaliacoesSection = document.createElement('div');
@@ -252,20 +253,80 @@ async function loadAvaliacoes() {
         <h5 class="mb-0">Minhas Avaliações</h5>
       </div>
       <div class="card-body">
-        <div class="alert alert-info">
-          <i class="bi bi-info-circle"></i> Sistema de avaliações em desenvolvimento. 
-          As avaliações aparecerão aqui após você completar hospedagens.
+        <div id="avaliacoesContainer">
+          <div class="alert alert-info">Carregando avaliações...</div>
         </div>
       </div>
     `;
     document.querySelector('main').appendChild(avaliacoesSection);
+  }
+
+  try {
+    const perfil = await API.obterPerfilVoluntarioDoUsuario(usuario.id);
+    const avaliacoes = await API.listarAvaliacoesVoluntario(perfil.id);
+    const mediaData = await API.obterMediaAvaliacoes(perfil.id);
+    
+    const container = document.getElementById('avaliacoesContainer');
+    
+    if (avaliacoes.length === 0) {
+      container.innerHTML = `
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle"></i> Você ainda não possui avaliações. 
+          Complete hospedagens para receber feedback dos solicitantes.
+        </div>
+      `;
+    } else {
+      // Show average rating
+      const mediaHTML = `
+        <div class="alert alert-success mb-3">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-star-fill text-warning me-2" style="font-size: 2rem;"></i>
+            <div>
+              <h4 class="mb-0">${mediaData.media.toFixed(1)} / 5.0</h4>
+              <small class="text-muted">${mediaData.total} ${mediaData.total === 1 ? 'avaliação' : 'avaliações'}</small>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Show individual reviews
+      const listGroup = document.createElement('div');
+      listGroup.className = 'list-group';
+      
+      avaliacoes.forEach(av => {
+        const stars = '⭐'.repeat(av.nota) + '☆'.repeat(5 - av.nota);
+        const item = document.createElement('div');
+        item.className = 'list-group-item';
+        item.innerHTML = `
+          <div class="d-flex w-100 justify-content-between mb-2">
+            <h6 class="mb-0">${av.avaliador_nome}</h6>
+            <small class="text-muted">${new Date(av.data_avaliacao).toLocaleDateString('pt-BR')}</small>
+          </div>
+          <div class="mb-2">
+            <span style="font-size: 1.2rem;">${stars}</span>
+            <span class="text-muted ms-2">${av.nota}/5</span>
+          </div>
+          ${av.comentario ? `<p class="mb-0 text-muted">${av.comentario}</p>` : '<p class="mb-0 text-muted fst-italic">Sem comentário</p>'}
+        `;
+        listGroup.appendChild(item);
+      });
+      
+      container.innerHTML = mediaHTML;
+      container.appendChild(listGroup);
+    }
+  } catch (error) {
+    console.error('[v0] Erro ao carregar avaliações:', error);
+    const container = document.getElementById('avaliacoesContainer');
+    if (container) {
+      container.innerHTML = '<div class="alert alert-danger">Erro ao carregar avaliações</div>';
+    }
   }
 }
 
 async function aprovarSolicitacao(id) {
   try {
     await API.atualizarStatusSolicitacao(id, 'aprovada');
-    alert('Solicitação aprovada!');
+    alert('Solicitação aprovada com sucesso!');
     location.reload();
   } catch (error) {
     console.error('[v0] Erro ao aprovar:', error);
@@ -276,10 +337,18 @@ async function aprovarSolicitacao(id) {
 async function recusarSolicitacao(id) {
   try {
     await API.atualizarStatusSolicitacao(id, 'recusada');
-    alert('Solicitação recusada!');
+    alert('Solicitação recusada.');
     location.reload();
   } catch (error) {
     console.error('[v0] Erro ao recusar:', error);
     alert('Erro ao recusar solicitação');
   }
+}
+
+function verDetalhesSolicitacao(id) {
+  alert(`Ver detalhes da solicitação ${id} (funcionalidade em desenvolvimento)`);
+}
+
+function verPerfilSolicitante(id) {
+  alert(`Ver perfil do solicitante ${id} (funcionalidade em desenvolvimento)`);
 }

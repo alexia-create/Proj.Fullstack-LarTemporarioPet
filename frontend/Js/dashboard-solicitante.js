@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     }).then(r => r.json());
 
-    // Update stats cards
     const statsCards = document.querySelectorAll('.row.g-4.mb-4 .card h3');
     if (statsCards.length >= 4) {
       statsCards[0].textContent = stats.animais_cadastrados || 0;
@@ -36,24 +35,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function showSection(hash) {
-    // Hide all sections
-    const allSections = document.querySelectorAll('.card.border-0.shadow-sm');
-    
-    // Show dashboard by default or based on hash
     if (!hash || hash === '#dashboard') {
-      // Show quick actions and stats (default view)
       loadMeusAnimais();
       loadSolicitacoes();
     } else if (hash === '#meus-animais') {
       loadMeusAnimais();
-      // Scroll to meus animais section
       const meusAnimaisSection = document.querySelector('.card-header:has(+ .card-body .table-responsive)');
       if (meusAnimaisSection) {
         meusAnimaisSection.closest('.card').scrollIntoView({ behavior: 'smooth' });
       }
     } else if (hash === '#solicitacoes') {
       loadSolicitacoes();
-      // Scroll to solicitacoes section
       const solicitacoesSection = document.querySelector('#solicitacoesContainer');
       if (solicitacoesSection) {
         solicitacoesSection.closest('.card').scrollIntoView({ behavior: 'smooth' });
@@ -72,21 +64,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
   sidebarLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-      // Remove active class from all links
       sidebarLinks.forEach(l => l.classList.remove('active'));
-      // Add active class to clicked link
       link.classList.add('active');
     });
   });
 
-  // Initial section load
   showSection(window.location.hash);
 
-  // Load initial data
   await loadMeusAnimais();
   await loadSolicitacoes();
 
-  // Add animal form
   const btnSaveAnimal = document.getElementById('btnSaveAnimal');
   if (btnSaveAnimal) {
     btnSaveAnimal.addEventListener('click', async () => {
@@ -95,10 +82,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         tipo_animal: document.getElementById('animalTipo').value,
         porte: document.getElementById('animalPorte').value,
         idade_aproximada: document.getElementById('animalIdade').value,
+        sexo: document.getElementById('animalSexo')?.value || 'macho',
         historia_animal: document.getElementById('animalDescricao').value,
-        cuidados_especiais: document.getElementById('animalSaude').value,
-        solicitante_id: usuario.id
+        cuidados_especiais: document.getElementById('animalSaude').value
       };
+
+      if (!animalData.nome_animal || !animalData.tipo_animal || !animalData.porte || !animalData.historia_animal) {
+        alert('Por favor, preencha todos os campos obrigatórios');
+        return;
+      }
 
       try {
         const response = await API.criarAnimal(animalData);
@@ -106,10 +98,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           alert('Erro: ' + response.error);
         } else {
           alert('Animal cadastrado com sucesso!');
-          // Close modal
           const modal = bootstrap.Modal.getInstance(document.getElementById('addAnimalModal'));
           if (modal) modal.hide();
-          // Reload data
           location.reload();
         }
       } catch (error) {
@@ -134,6 +124,13 @@ async function loadMeusAnimais() {
         tabelaBody.innerHTML = '';
         userAnimals.forEach(animal => {
           const row = document.createElement('tr');
+          const statusMap = {
+            'buscando_lar': { class: 'warning', text: 'Buscando Lar' },
+            'em_lar_temporario': { class: 'success', text: 'Em Lar' },
+            'adotado': { class: 'info', text: 'Adotado' }
+          };
+          const status = statusMap[animal.status] || { class: 'secondary', text: animal.status };
+          
           row.innerHTML = `
             <td>
               <div class="d-flex align-items-center">
@@ -143,7 +140,7 @@ async function loadMeusAnimais() {
             </td>
             <td><span class="badge bg-primary">${animal.tipo_animal}</span></td>
             <td>${animal.porte}</td>
-            <td><span class="badge bg-warning text-dark">${animal.status || 'buscando_lar'}</span></td>
+            <td><span class="badge bg-${status.class}">${status.text}</span></td>
             <td>${new Date(animal.data_cadastro).toLocaleDateString('pt-BR')}</td>
             <td>
               <button class="btn btn-sm btn-outline-primary" onclick="verAnimal(${animal.id})">Ver</button>
@@ -171,27 +168,34 @@ async function loadSolicitacoes() {
     const solicitacoesContainer = document.getElementById('solicitacoesContainer');
     if (solicitacoesContainer) {
       if (solicitacoes.length === 0) {
-        solicitacoesContainer.innerHTML = '<div class="alert alert-info"><i class="bi bi-info-circle"></i> Você ainda não recebeu nenhuma solicitação de voluntários.</div>';
+        solicitacoesContainer.innerHTML = '<div class="alert alert-info"><i class="bi bi-info-circle"></i> Você ainda não tem solicitações de hospedagem.</div>';
       } else {
         const listGroup = document.createElement('div');
         listGroup.className = 'list-group';
         
         solicitacoes.forEach(sol => {
+          const statusMap = {
+            'pendente': 'warning',
+            'aprovada': 'success',
+            'recusada': 'danger',
+            'em_andamento': 'primary',
+            'concluida': 'secondary',
+            'cancelada': 'dark'
+          };
+          const statusBadge = statusMap[sol.status_solicitacao] || 'secondary';
+          
           const item = document.createElement('div');
           item.className = 'list-group-item';
-          const statusBadge = sol.status_solicitacao === 'pendente' ? 'warning' : 
-                             sol.status_solicitacao === 'aprovada' ? 'success' : 'danger';
           item.innerHTML = `
             <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1">${sol.voluntario_nome} quer hospedar ${sol.nome_animal}</h6>
+              <h6 class="mb-1">${sol.voluntario_nome} - ${sol.nome_animal}</h6>
               <small>${new Date(sol.data_solicitacao).toLocaleDateString('pt-BR')}</small>
             </div>
             <p class="mb-1 text-muted">Status: <span class="badge bg-${statusBadge}">${sol.status_solicitacao}</span></p>
+            <p class="mb-1 small text-muted">Animal: ${sol.tipo_animal}</p>
             ${sol.status_solicitacao === 'pendente' ? `
             <div class="mt-2">
-              <button class="btn btn-sm btn-success" onclick="aprovarSolicitacao(${sol.id})">Aprovar</button>
-              <button class="btn btn-sm btn-danger" onclick="recusarSolicitacao(${sol.id})">Recusar</button>
-              <button class="btn btn-sm btn-outline-primary">Ver Perfil</button>
+              <button class="btn btn-sm btn-outline-primary" onclick="verPerfilVoluntario(${sol.voluntario_id})">Ver Perfil</button>
             </div>
             ` : ''}
           `;
@@ -213,7 +217,6 @@ async function loadSolicitacoes() {
 
 async function loadHistorico() {
   const usuario = getUsuarioLogado();
-  // Create or find historico section
   let historicoSection = document.querySelector('#historicoSection');
   if (!historicoSection) {
     historicoSection = document.createElement('div');
@@ -243,6 +246,7 @@ async function loadHistorico() {
       const listGroup = document.createElement('div');
       listGroup.className = 'list-group';
       concluidas.forEach(sol => {
+        const statusClass = sol.status_solicitacao === 'concluida' ? 'success' : 'secondary';
         const item = document.createElement('div');
         item.className = 'list-group-item';
         item.innerHTML = `
@@ -250,7 +254,7 @@ async function loadHistorico() {
             <h6 class="mb-1">${sol.nome_animal} - Hospedado por ${sol.voluntario_nome}</h6>
             <small>${new Date(sol.data_solicitacao).toLocaleDateString('pt-BR')}</small>
           </div>
-          <p class="mb-1">Status: <span class="badge bg-secondary">${sol.status_solicitacao}</span></p>
+          <p class="mb-1">Status: <span class="badge bg-${statusClass}">${sol.status_solicitacao}</span></p>
         `;
         listGroup.appendChild(item);
       });
@@ -263,7 +267,6 @@ async function loadHistorico() {
 }
 
 async function loadMensagens() {
-  // Create or find mensagens section
   let mensagensSection = document.querySelector('#mensagensSection');
   if (!mensagensSection) {
     mensagensSection = document.createElement('div');
@@ -292,24 +295,6 @@ function editarAnimal(id) {
   alert('Editar animal ' + id + ' - Funcionalidade em desenvolvimento');
 }
 
-async function aprovarSolicitacao(id) {
-  try {
-    await API.atualizarStatusSolicitacao(id, 'aprovada');
-    alert('Solicitação aprovada!');
-    location.reload();
-  } catch (error) {
-    console.error('[v0] Erro ao aprovar:', error);
-    alert('Erro ao aprovar solicitação');
-  }
-}
-
-async function recusarSolicitacao(id) {
-  try {
-    await API.atualizarStatusSolicitacao(id, 'recusada');
-    alert('Solicitação recusada!');
-    location.reload();
-  } catch (error) {
-    console.error('[v0] Erro ao recusar:', error);
-    alert('Erro ao recusar solicitação');
-  }
+function verPerfilVoluntario(id) {
+  alert('Ver perfil do voluntário ' + id + ' - Funcionalidade em desenvolvimento');
 }
