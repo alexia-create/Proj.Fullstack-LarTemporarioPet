@@ -26,33 +26,33 @@ O back-end foi construído com as seguintes tecnologias:
 
 ## Como Rodar o Projeto Localmente
 
-Para rodar este back-end na sua própria máquina, siga os passos:
+Para rodar este back-end localmente:
 
 ### 1. Pré-requisitos
 
 * [Node.js](https://nodejs.org/) (versão 18 ou superior)
 * [PostgreSQL](https://www.postgresql.org/download/) instalado e rodando localmente.
-* Um cliente de banco de dados (ex: DBeaver, PgAdmin) ou o Postman.
+* Um cliente de banco de dados tipo por exemplo o PgAdmin.
 
 ### 2. Instalação
 
-1.  Clone o repositório e entre na pasta do back-end:
+1.  Clonar o repositório e entrar na pasta do back-end:
     ```bash
     git clone [https://github.com/alexia-create/Proj.Fullstack-LarTemporarioPet.git](https://github.com/alexia-create/Proj.Fullstack-LarTemporarioPet.git)
     cd Proj.Fullstack-LarTemporarioPet/backend
     ```
 
-2.  Instale as dependências:
+2.  Instalar as dependências:
     ```bash
     npm install
     ```
 
-3.  Crie seu banco de dados PostgreSQL local (ex: `pousapet_db`).
+3.  Criar um banco de dados PostgreSQL local.
 
-4.  Execute o script `bancodedados.sql` no seu banco para criar todas as tabelas e tipos.
+4.  Executar o script `bancodedados.sql` no banco para criar todas as tabelas e tipos.
 
-5.  **Configure as Variáveis de Ambiente:**
-    * Este projeto **não** usa um arquivo `.env`. Você precisa configurar sua conexão com o banco diretamente no arquivo `db.js`.
+5.  **Configurar as Variáveis de Ambiente:**
+    Você precisa configurar sua conexão com o banco diretamente no arquivo `db.js`.
     * **No `db.js`:** Altere o objeto `Pool` para se conectar ao seu banco local:
         ```javascript
         const pool = new Pool({
@@ -70,7 +70,7 @@ Para rodar este back-end na sua própria máquina, siga os passos:
 
 ### 3. Rodando o Servidor
 
-Com tudo instalado e configurado, inicie o servidor:
+Com tudo instalado e configurado, agora é iniciar o servidor:
 
 ```bash
 node servidor.js
