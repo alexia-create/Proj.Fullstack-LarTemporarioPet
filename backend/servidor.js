@@ -42,7 +42,6 @@ app.get('/usuarios', async (req, res) => {
 });
 
 
-const bcrypt = require('bcrypt');
 
 
 app.post('/usuarios', async (req, res) => {
@@ -100,7 +99,6 @@ app.post('/usuarios', async (req, res) => {
 });
 
 
-const jwt = require('jsonwebtoken');
 
 function verificarToken(req, res, next) {
 
