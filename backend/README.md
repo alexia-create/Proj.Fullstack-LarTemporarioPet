@@ -8,13 +8,13 @@ O PousaPet é uma plataforma que conecta voluntários dispostos a oferecer lar t
 
 O back-end foi construído com as seguintes tecnologias:
 
-* **Runtime:** Node.js
-* **Framework:** Express.js
-* **Banco de Dados:** PostgreSQL
-* **Autenticação:** JWT (JSON Web Tokens)
-* **Hashing de Senhas:** Bcrypt.js
-* **Conexão com BD:** node-postgres (pg)
-* **CORS:** cors
+* Node.js
+* Express.js
+* PostgreSQL
+* JWT (JSON Web Tokens)
+* Bcrypt.js
+* node-postgres (pg)
+* cors
 
 ### Deploy
 
