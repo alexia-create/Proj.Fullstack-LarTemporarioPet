@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Solicitante - PousaPet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold text-primary ms-3" href="index.html">
+                <i class="bi bi-heart-fill"></i> PousaPet
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto me-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle fs-5"></i> <span id="userName">Minha Conta</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Configurações</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="btnLogout"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#dashboard">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="voluntários.html">
+                                <i class="bi bi-search"></i> Buscar Voluntários
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#meus-animais">
+                                <i class="bi bi-heart-fill"></i> Meus Animais
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#solicitacoes">
+                                <i class="bi bi-inbox"></i> Minhas Solicitações
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#historico">
+                                <i class="bi bi-clock-history"></i> Histórico
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#mensagens">
+                                <i class="bi bi-chat-dots"></i> Mensagens
+                                <span class="badge bg-primary ms-2">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Bem-vindo, <span id="userNameMain">Solicitante</span>!</h1>
+                    <p class="text-muted">Painel do Solicitante - Gerencie seus animais que precisam de lar temporário</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="text-muted small mb-1">Animais Cadastrados</p>
+                                        <h3 class="mb-0">0</h3>
+                                    </div>
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                        <i class="bi bi-heart text-primary fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="text-muted small mb-1">Em Lar Temporário</p>
+                                        <h3 class="mb-0">0</h3>
+                                    </div>
+                                    <div class="bg-success bg-opacity-10 p-3 rounded">
+                                        <i class="bi bi-house-heart text-success fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="text-muted small mb-1">Aguardando Lar</p>
+                                        <h3 class="mb-0">0</h3>
+                                    </div>
+                                    <div class="bg-warning bg-opacity-10 p-3 rounded">
+                                        <i class="bi bi-hourglass text-warning fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="text-muted small mb-1">Adotados</p>
+                                        <h3 class="mb-0">0</h3>
+                                    </div>
+                                    <div class="bg-info bg-opacity-10 p-3 rounded">
+                                        <i class="bi bi-check-circle text-info fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Ações Rápidas</h5>
+                                <div class="d-flex gap-3 flex-wrap">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAnimalModal">
+                                        <i class="bi bi-plus-circle"></i> Cadastrar Novo Animal
+                                    </button>
+                                    <a href="voluntários.html" class="btn btn-outline-primary">
+                                        <i class="bi bi-search"></i> Buscar Voluntários
+                                    </a>
+                                    <button class="btn btn-outline-success">
+                                        <i class="bi bi-file-earmark-text"></i> Relatório de Animais
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meus Animais -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Meus Animais</h5>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAnimalModal">
+                            <i class="bi bi-plus-circle"></i> Adicionar Animal
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Animal</th>
+                                        <th>Tipo</th>
+                                        <th>Porte</th>
+                                        <th>Status</th>
+                                        <th>Data Cadastro</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="animaisTableBody">
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">Carregando animais...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solicitações de Voluntários -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0">Solicitações de Voluntários Recebidas</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="solicitacoesContainer">
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i> Carregando solicitações...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Animal Modal -->
+    <div class="modal fade" id="addAnimalModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastrar Novo Animal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAnimalForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="animalNome" class="form-label">Nome do Animal *</label>
+                                    <input type="text" class="form-control" id="animalNome" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="animalTipo" class="form-label">Tipo *</label>
+                                    <select class="form-select" id="animalTipo" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="cachorro">Cachorro</option>
+                                        <option value="gato">Gato</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="animalRaca" class="form-label">Raça</label>
+                                    <input type="text" class="form-control" id="animalRaca" placeholder="Ex: SRD, Labrador...">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="animalIdade" class="form-label">Idade Estimada (anos)</label>
+                                    <input type="number" class="form-control" id="animalIdade" min="0" step="0.5">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="animalPorte" class="form-label">Porte *</label>
+                                    <select class="form-select" id="animalPorte" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="pequeno">Pequeno</option>
+                                        <option value="medio">Médio</option>
+                                        <option value="grande">Grande</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="animalDataResgate" class="form-label">Data de Resgate</label>
+                                    <input type="date" class="form-control" id="animalDataResgate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="animalDescricao" class="form-label">Descrição *</label>
+                            <textarea class="form-control" id="animalDescricao" rows="3" required placeholder="Conte a história do animal, comportamento, personalidade..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="animalSaude" class="form-label">Condições de Saúde *</label>
+                            <textarea class="form-control" id="animalSaude" rows="2" required placeholder="Ex: Vacinado, castrado, precisa medicação..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="animalFoto" class="form-label">Foto do Animal</label>
+                            <input type="file" class="form-control" id="animalFoto" accept="image/*">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="animalUrgente">
+                            <label class="form-check-label" for="animalUrgente">
+                                Marcar como URGENTE (precisa de lar imediatamente)
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveAnimal">
+                        <i class="bi bi-check-circle"></i> Cadastrar Animal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Load config and api before dashboard-solicitante.js -->
+    <script src="Js/config.js"></script>
+    <script src="Js/api.js"></script>
+    <script src="Js/auth.js"></script>
+    <script src="Js/dashboard-solicitante.js"></script>
+</body>
+</html>

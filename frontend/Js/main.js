@@ -1,163 +1,55 @@
-
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault()
-    const target = document.querySelector(this.getAttribute("href"))
-    if (target) {
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      })
+// CHANGE: Home page - gallery loading
+document.addEventListener('DOMContentLoaded', async () => {
+  // Check if user is logged in
+  if (isLogado()) {
+    const usuarioLogado = getUsuarioLogado();
+    const tipoUsuario = getTipoUsuario();
+    
+    // Update navbar buttons
+    const loginBtn = document.querySelector('a[href="login.html"]');
+    const cadastroBtn = document.querySelector('a[href="cadastro.html"]');
+    
+    if (loginBtn && cadastroBtn) {
+      loginBtn.textContent = 'Dashboard';
+      loginBtn.href = tipoUsuario === 'voluntario' ? 'dashboard.html' : 'dashboard-solicitante.html';
+      cadastroBtn.remove();
     }
-  })
-})
+  }
 
-// Search Form Handler
-const searchForm = document.getElementById("searchForm")
-if (searchForm) {
-  searchForm.addEventListener("submit", (e) => {
-    e.preventDefault()
+  // Load pet gallery
+  const petGallery = document.getElementById('petGallery');
+  if (petGallery) {
+    try {
+      const animais = await API.listarAnimais();
+      petGallery.innerHTML = '';
 
-    const animalType = document.getElementById("animalType")?.value || ""
-    const porte = document.getElementById("porte")?.value || ""
-    const idade = document.getElementById("idade")?.value || ""
+      if (animais.length === 0) {
+        petGallery.innerHTML = '<p class="text-center">Nenhum animal disponível no momento.</p>';
+        return;
+      }
 
-    // Store search params and redirect
-    const searchParams = new URLSearchParams({
-      tipo: animalType,
-      porte,
-      idade,
-    })
-
-    window.location.href = `animais.html?${searchParams.toString()}`
-  })
-}
-
-// Load Pet Gallery from Dog API
-async function loadPetGallery() {
-  const galleryContainer = document.getElementById("petGallery")
-  if (!galleryContainer) return
-
-  try {
-    // Using Dog API (public API)
-    const dogResponse = await fetch("https://dog.ceo/api/breeds/image/random/6")
-    const dogData = await dogResponse.json()
-
-    if (dogData.status === "success") {
-      galleryContainer.innerHTML = ""
-
-      dogData.message.forEach((imageUrl, index) => {
-        const col = document.createElement("div")
-        col.className = "col-md-4 col-lg-2 fade-in"
-        col.style.animationDelay = `${index * 0.1}s`
-
-        col.innerHTML = `
-                    <div class="pet-gallery-card card border-0 shadow-sm">
-                        <img src="${imageUrl}" class="card-img-top" alt="Pet feliz">
-                        <div class="card-body p-2 text-center">
-                            <small class="text-muted">Pet Feliz #${index + 1}</small>
-                        </div>
-                    </div>
-                `
-
-        galleryContainer.appendChild(col)
-      })
-    }
-  } catch (error) {
-    console.error("[v0] Error loading pet gallery:", error)
-    galleryContainer.innerHTML = `
-            <div class="col-12 text-center">
-                <p class="text-muted">Não foi possível carregar as imagens no momento.</p>
+      animais.slice(0, 6).forEach(animal => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4 mb-4';
+        card.innerHTML = `
+          <div class="card h-100 shadow-sm border-0">
+            <img src="/--animal-nome-animal-.jpg" class="card-img-top" alt="${animal.nome_animal}">
+            <div class="card-body">
+              <h5 class="card-title">${animal.nome_animal}</h5>
+              <p class="card-text text-muted">
+                <i class="bi bi-paw"></i> ${animal.tipo_animal} | 
+                <i class="bi bi-rulers"></i> ${animal.porte}
+              </p>
             </div>
-        `
-  }
-}
-
-// Initialize gallery on page load
-if (document.getElementById("petGallery")) {
-  loadPetGallery()
-}
-
-// Toast Notification Function
-function showToast(message, type = "info") {
-  // Create toast container if it doesn't exist
-  let toastContainer = document.getElementById("toastContainer")
-  if (!toastContainer) {
-    toastContainer = document.createElement("div")
-    toastContainer.id = "toastContainer"
-    toastContainer.className = "position-fixed top-0 end-0 p-3"
-    toastContainer.style.zIndex = "9999"
-    document.body.appendChild(toastContainer)
-  }
-
-  // Create toast
-  const toastId = "toast-" + Date.now()
-  const bgClass =
-    type === "success" ? "bg-success" : type === "warning" ? "bg-warning" : type === "danger" ? "bg-danger" : "bg-info"
-
-  const toastHTML = `
-        <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert">
-            <div class="d-flex">
-                <div class="toast-body">
-                    ${message}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            <div class="card-footer bg-white border-top-0">
+              <a href="animais.html" class="btn btn-sm btn-primary">Ver Detalhes</a>
             </div>
-        </div>
-    `
-
-  toastContainer.insertAdjacentHTML("beforeend", toastHTML)
-
-  const toastElement = document.getElementById(toastId)
-  const toast = window.bootstrap.Toast.getOrCreateInstance(toastElement, { delay: 3000 })
-  toast.show()
-
-  // Remove from DOM after hidden
-  toastElement.addEventListener("hidden.bs.toast", () => {
-    toastElement.remove()
-  })
-}
-
-// Navbar scroll effect
-window.addEventListener("scroll", () => {
-  const navbar = document.querySelector(".navbar")
-  if (window.scrollY > 50) {
-    navbar.classList.add("shadow")
-  } else {
-    navbar.classList.remove("shadow")
+          </div>
+        `;
+        petGallery.appendChild(card);
+      });
+    } catch (error) {
+      console.error('Erro ao carregar gallery:', error);
+    }
   }
-})
-
-// Add animation on scroll
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: "0px 0px -50px 0px",
-}
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("fade-in")
-      observer.unobserve(entry.target)
-    }
-  })
-}, observerOptions)
-
-// Observe all cards
-document.querySelectorAll(".card, .feature-card, .service-card").forEach((card) => {
-  observer.observe(card)
-})
-
-// FAQ Accordion Enhancement
-document.querySelectorAll(".accordion-button").forEach((button) => {
-  button.addEventListener("click", function () {
-    const icon = this.querySelector("i")
-    if (icon) {
-      icon.classList.toggle("bi-chevron-down")
-      icon.classList.toggle("bi-chevron-up")
-    }
-  })
-})
-
-console.log("PousaPet main.js Carregado com sucesso!")
-
+});
